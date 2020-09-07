@@ -9,30 +9,69 @@ public class DoubleCircularQT3<Item> implements Iterable {
         list.addToQ('a');
         list.addToQ('c');
         list.addToQ('b');
-        list.removeFromFront();
+        //list.removeFromFront();
+        Iterator lala =  list.iterator();
+        while (lala.hasNext()){
+            System.out.print( "[" + lala.next() + "]");
+        }
+
     }
 
     //Sentinel element
-    private Node head;
+    private Node<Item> sentinel;
     //Size of the list - used for the 'remove' operation
     public static int numberOfNodes;
 
     public DoubleCircularQT3() {
-        head = new Node();
-        head.next = head;
-        head.prev = head;
+        sentinel = new Node();
+        sentinel.next = sentinel;
+        sentinel.prev = sentinel;
+    }
+
+    private static class DCLLIterator<Item> implements Iterator<Item>{
+        private Node<Item> current;
+        private Node<Item> root;
+        private boolean rootVisited = false;
+        public DCLLIterator(Node root) {
+            this.root = root;
+            this.current = root;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (current == root && rootVisited){
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public Item next() {
+            if (current == root){
+                if (rootVisited){
+                    return null;
+                } else {
+                    rootVisited = true;
+                }
+            }
+            Item item = current.item;
+            current = current.next;
+            return item;
+        }
     }
 
     @Override
     public Iterator iterator() {
-        return null;
+
+        return new DCLLIterator(sentinel.next);
+
+
     }
 
-
-    private class Node {
+    private static class Node<Item> {
         private Item item;
-        private Node next;
-        private Node prev;
+        private Node<Item> next;
+        private Node<Item> prev;
     }
 
     private boolean isEmpty() {
@@ -40,19 +79,18 @@ public class DoubleCircularQT3<Item> implements Iterable {
     }
 
     public void addToQ(Item item) {
-        Node oldNode = new Node();
+        Node<Item> oldNode = new Node();
         oldNode.item = item;
         numberOfNodes++;
-        if (head == null) {
+        if (sentinel == null) {
             //Loop the pointers
             oldNode.next = oldNode.prev = oldNode;
-            System.out.println("\nElement: [" + item.toString() + "] has been enqueued");
             return;
         }
 
-        oldNode.next = head.next;
-        oldNode.prev = head;
-        head.next = oldNode;
+        oldNode.next = sentinel.next;
+        oldNode.prev = sentinel;
+        sentinel.next = oldNode;
         oldNode.next.prev = oldNode;
         StdOut.println(displayBrackets());
     }
@@ -63,16 +101,16 @@ public class DoubleCircularQT3<Item> implements Iterable {
         } else {
             // Decrease the counter because a node will be removed
             numberOfNodes--;
-            Item item = head.prev.item;
-            head.prev.prev.next = head;
-            head.prev = head.prev.prev;
+            Item item = sentinel.prev.item;
+            sentinel.prev.prev.next = sentinel;
+            sentinel.prev = sentinel.prev.prev;
         }
         System.out.println(displayBrackets());
     }
 
     //Use a string bulder because of the special output required from the lab task
     public String displayBrackets() {
-        Node node = head.prev;
+        Node node = sentinel.prev;
         int i = 0;
         if (isEmpty()) {
             return "[]";
@@ -83,12 +121,13 @@ public class DoubleCircularQT3<Item> implements Iterable {
             sb.append("[");
             sb.append(node.item.toString());
             sb.append("],");
-            node = node.prev;
+            node = node.next;
             i++;
         }
         //Don't place ',' after the last element
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
+
 
 }
