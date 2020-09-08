@@ -1,80 +1,32 @@
-import edu.princeton.cs.algs4.StdOut;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
+/**
+ * This is an implementation of generic iterable FIFO-queue based on a double linked circular list.
+ * The implementation contains methods to:
+ * addToQ - adds an element in the back of the queue - FIFO
+ * removeFromQFront - removes an element in the front of the queue - FIFO
+ * @author Hristo Georgiev - 1c3r00t
+ * @param <Item>
+ */
 public class DoubleCircularQT3<Item> implements Iterable {
-    //Main method to test both adding and removing from the list
-    public static void main(String[] args) {
-        DoubleCircularQT3<Character> list = new DoubleCircularQT3<>();
-        System.out.println("Testing add to back");
-        list.addToQ('a');
-        list.addToQ('c');
-        list.addToQ('b');
-       // list.addToQ('e');
-       // list.addToQ('d');
-        System.out.println();
-
-        list.printAll();
-        System.out.println();
-
-        System.out.println("Testing the iterator:");
-        Iterator iterator =  list.iterator();
-        while (iterator.hasNext()){
-            System.out.print( "[" + iterator.next() + "]");
-        }
-        System.out.println();
-        System.out.println();
-
-        System.out.println("Testing remove from front");
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        System.out.println();
-
-        System.out.println("Testing the iterator:");
-        Iterator iterator1 =  list.iterator();
-        while (iterator1.hasNext()){
-            System.out.print( "[" + iterator1.next() + "]");
-        }
-        //iterator1.next();
-    }
 
     //Sentinel element
     private Node<Item> sentinel;
     //Size of the list - used for the 'remove' operation
-    public static int numberOfNodes;
+    private int numberOfNodes;
 
-    /*Helper method to understand how the nodes are linked with each other.
-      The method can be used after each insertion which will help with debugging
-      if that is needed (It was needed).
-      If you want to use the method just uncomment below and uncomment in main
+    /**
+     * Iterator implementation. Used to iterate through the list.
+     * @param <Item>
+     */
 
-    */
-    private void printAll() {
-        Node print = sentinel.next;
-        boolean visited = false;
 
-        while (print != null && (print != sentinel.next || (print == sentinel.next && !visited))) {
-            if (print == sentinel.next) {
-                visited = true;
-            }
-            System.out.print("Item :" + print.item);
-            System.out.print(" Prev :" + print.prev.item);
-            System.out.println(" Next :" + print.next.item);
-            print =  print.next;
-        }
-    }
-    /*Iterator implementation. Used to iterate through the list.
-
-    */
     private static class DCLLIterator<Item> implements Iterator<Item>{
         private Node<Item> current;
         private Node<Item> root;
         private boolean rootVisited = false;
+
+        //Constructor for the iterator
         public DCLLIterator(Node root) {
             this.root = root;
             this.current = root;
@@ -82,12 +34,13 @@ public class DoubleCircularQT3<Item> implements Iterable {
 
         @Override
         public boolean hasNext() {
+            //Check if there is more elements
             if (current == null || (current == root && rootVisited)){
                 return false;
             }
             return true;
         }
-
+        //Gives the next element in the list
         @Override
         public Item next() {
             if (current == null) {
@@ -116,7 +69,8 @@ public class DoubleCircularQT3<Item> implements Iterable {
         private Node<Item> next;
         private Node<Item> prev;
     }
-
+    //Method to add new items in the back of the queues. Also add pointers between the beginning and the end of the list
+    //To make it circular
     public void addToQ(Item item) {
         Node<Item> newNode = new Node();
         newNode.item = item;
@@ -134,25 +88,29 @@ public class DoubleCircularQT3<Item> implements Iterable {
         //Display the updated list after each adding. This is requested by the lab task
         System.out.println(displayBrackets());
     }
-    //Remove element from the front of the Q
+    //Remove element from the front of the queue and fix the pointers to keep the list circular
     public void removeFromFront(){
         if (sentinel == null){
             System.out.println("The queue is empty!");
         } else {
             // Decrease the counter because a node will be removed
             numberOfNodes--;
+            //If this is the only element remove the references to this element
             if (sentinel == sentinel.next && sentinel == sentinel.prev) {
                 sentinel = null;
             } else {
+                //Keep the Circle in the list
                 sentinel.next = sentinel.next.next;
                 sentinel.next.next.prev = sentinel;
             }
         }
-        //Display the updated list after removing an element - dequeue
+        //Display the updated list after removing an element - dequeue. This is requested by the lab task
         System.out.println(displayBrackets());
     }
-
-    //Use a string builder because of the special output required from the lab task
+    /**
+     *     Use a string builder because of the special output required from the lab task.
+     *     This is requested by the lab task
+     */
     public String displayBrackets() {
         if (sentinel == null) {
             return "[]";

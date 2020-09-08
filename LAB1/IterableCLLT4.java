@@ -1,127 +1,23 @@
+
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
  * This is an implementation of generic iterable circular linked list.
  * The implementation contains methods to:
- * addToQBack
- * addToQFront
- * removeFromQBack
- * removeFromQFront
- * @author Hristo Georgiev - 1c3r00t
+ * addToQBack - adds to the back of the list
+ * addToQFront - adds to the front of the list
+ * removeFromQBack - removes from the back of the list
+ * removeFromQFront - removes from the front of the list
+ *
  * @param <Item>
+ * @author Hristo Georgiev - 1c3r00t
  */
 
 public class IterableCLLT4<Item> implements Iterable<Item> {
 
-    public static void main(String[] args) {
-        IterableCLLT4<Character> list = new IterableCLLT4<Character>();
-        System.out.println("Queue just created");
-        System.out.println(list.displayBrackets());
-        System.out.println();
-
-        System.out.println("Testing empty iterator");
-        Iterator<Character> emptyIterator = list.iterator();
-        System.out.println(emptyIterator.hasNext());
-        try {
-            emptyIterator.next();
-        } catch (NoSuchElementException ex) {
-            System.out.println("Queue is empty - iterator throws NoSuchElementException");
-        }
-        System.out.println();
-
-        // Add to front
-        System.out.println("Add to front");
-        list.addToQFront('a');
-        list.addToQFront('b');
-        list.addToQFront('c');
-        System.out.println();
-
-        // Add to back
-        System.out.println("Add to back");
-        list.addToQBack('d');
-        list.addToQBack('e');
-        list.addToQBack('f');
-        System.out.println();
-
-        // Remove from front
-        System.out.println("Remove from front");
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        list.removeFromFront();
-        System.out.println();
-
-        // Testing remove from back
-        System.out.println("Add elements");
-        list.addToQFront('a');
-        list.addToQFront('b');
-        list.addToQFront('c');
-        list.addToQBack('d');
-        list.addToQBack('e');
-        list.addToQBack('f');
-        System.out.println();
-
-        System.out.println("Remove from back");
-        list.removeFromBack();
-        list.removeFromBack();
-        list.removeFromBack();
-        list.removeFromBack();
-        list.removeFromBack();
-        list.removeFromBack();
-        list.removeFromBack();
-        System.out.println();
-
-        // Testing the iterator
-        System.out.println("Add elements");
-        list.addToQFront('a');
-        list.addToQFront('b');
-        list.addToQFront('c');
-        list.addToQBack('d');
-        list.addToQBack('e');
-        list.addToQBack('f');
-        System.out.println();
-
-        System.out.println("Testing the iterator");
-        Iterator iterator = list.iterator();
-        while (iterator.hasNext()) {
-            System.out.print("[" + iterator.next() + "]");
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println(iterator.hasNext());
-        try {
-            iterator.next();
-        } catch (NoSuchElementException ex) {
-            System.out.println("Queue is empty - iterator throws NoSuchElementException");
-        }
-
-
-    }
-
-    /*Helper method to understand how the nodes are linked with each other.
-      The method can be used after each insertion which will help with debugging
-      if that is needed (It was needed).
-      If you want to use the method just uncomment below and uncomment in main
-
- */
-/*    private void printAll() {
-        Node print = head;
-        boolean visited = false;
-
-        while (print != null && (print != head || (print == head && !visited))) {
-            if (print == head) {
-                visited = true;
-            }
-            System.out.print("Item :" + print.item);
-            System.out.println(" Next :" + print.next.item);
-            print = print.next;
-        }
-    }*/
-
+    //Declaration of pointers 'head' and 'tail'.
     private Node<Item> head; // --> first
     private Node<Item> tail; // --> last
     private int numberOfNodes;
@@ -138,11 +34,12 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         return new CLLIterator(head);
     }
 
+    //Check if the queue is empty
     private boolean isEmpty() {
         return tail == null && head == null;
     }
 
-    //Add element to the back of the Q
+    //Add element to the back of the list
     public void addToQBack(Item item) {
         Node<Item> oldNode = tail;
         tail = new Node<Item>();
@@ -159,7 +56,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         System.out.println(displayBrackets());
     }
 
-    //Add elements to the front of the Q
+    //Add elements to the front of the list
     public void addToQFront(Item item) {
         Node<Item> oldNode = head;
         head = new Node<Item>();
@@ -176,13 +73,12 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         System.out.println(displayBrackets());
     }
 
-    //Remove elements from the front of the Q
+    //Remove elements from the front of the list
     public void removeFromFront() {
         if (isEmpty()) {
             System.out.println("The queue is empty!");
             return;
         }
-
         if (head == tail) {
             head = null;
             tail = null;
@@ -190,7 +86,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
             System.out.println(displayBrackets());
             return;
         }
-
+        //Remove the reference to the first element in the list (Will disappear after the garbage collector swips)
         head = head.next;
         tail.next = head;
 
@@ -198,7 +94,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         System.out.println(displayBrackets());
     }
 
-    //Remove elements from the back of the Q
+    //Remove elements from the back of the list
     public void removeFromBack() {
         if (isEmpty()) {
             System.out.println("The queue is empty!");
@@ -212,11 +108,12 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
             System.out.println(displayBrackets());
             return;
         }
-
         Node nextToLast = head;
+        //Find the nextToLast element
         while (nextToLast.next != tail) {
             nextToLast = nextToLast.next;
         }
+        //Remove the reference to the last element in the list (Will disappear after the garbage collector swips)
         nextToLast.next = head;
         tail = nextToLast;
 
@@ -224,7 +121,10 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         System.out.println(displayBrackets());
     }
 
-    //Use a string builder because of the special output required from the lab task
+    /**
+     * Use a string builder because of the special output required from the lab task.
+     * This is requested by the lab task
+     */
     public String displayBrackets() {
         IterableCLLT4.Node node = head;
         int i = 0;
@@ -246,10 +146,8 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
     }
 
     /**
-     *
      * item -> Generic type - It can be Integer, Character ..
      * next -> Reference to the next node
-     *
      */
     private static class Node<Item> {
         // prev is not needed because the list is singly linked
@@ -257,33 +155,40 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         Node next;
     }
 
+    //Iterator implementation to make it iterable - per task request
     private static class CLLIterator<Item> implements Iterator<Item> {
         private Node<Item> head;
         private Node<Item> current;
         private boolean rootVisited = false;
 
+        //Constructor for the iterator
         public CLLIterator(final Node<Item> head) {
             this.head = head;
+            //To keep track where we are in the list
             this.current = head;
         }
 
         @Override
         public boolean hasNext() {
-            if (current == null || rootVisited) {
+            //Check if there is more elements
+            if (current == null || (current == head && rootVisited)) {
                 return false;
             }
             return true;
         }
 
+        //Gives the next element in the list
         @Override
         public Item next() {
             if (current == null) {
                 throw new NoSuchElementException();
             }
+            //If we are in the end and the first element has been visited
             if (current == head && rootVisited) {
                 throw new NoSuchElementException();
             }
-            if (current.next == head) {
+            //Mark root as visited if the condition is met
+            if (current == head) {
                 rootVisited = true;
             }
             Item item = current.item;
