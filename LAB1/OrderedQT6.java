@@ -1,44 +1,40 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * This is an implementation of generic iterable circular linked list.
- * The implementation contains methods to:
- * addToQBack
- * addToQFront
- * removeFromQBack
- * removeFromQFront
- * @author Hristo Georgiev - 1c3r00t
- * @param <Item>
- */
+public class OrderedQT6 {
 
-public class IterableCLLT4<Item> implements Iterable<Item> {
 
     public static void main(String[] args) {
-        IterableCLLT4<Character> list = new IterableCLLT4<Character>();
+        OrderedQT6 list = new OrderedQT6();
         System.out.println("Queue just created");
         System.out.println(list.displayBrackets());
         System.out.println();
+        list.addToQSorted(5);
+        list.addToQSorted(7);
+        list.addToQSorted(3);
+        list.addToQSorted(4);
+        list.addToQSorted(6);
+        System.out.println(list.displayBrackets());
 
-        System.out.println("Testing empty iterator");
-        Iterator<Character> emptyIterator = list.iterator();
-        System.out.println(emptyIterator.hasNext());
-        try {
-            emptyIterator.next();
-        } catch (NoSuchElementException ex) {
-            System.out.println("Queue is empty - iterator throws NoSuchElementException");
-        }
-        System.out.println();
+
+        //Iterator<Integer> emptyIterator = list.iterator();
+//        System.out.println(emptyIterator.hasNext());
+//        try {
+//            emptyIterator.next();
+//        } catch (NoSuchElementException ex) {
+//            System.out.println("Queue is empty - iterator throws NoSuchElementException");
+//        }
+//        System.out.println();
 
         // Add to front
-        System.out.println("Add to front");
+  /*      System.out.println("Add to front");
         list.addToQFront('a');
         list.addToQFront('b');
         list.addToQFront('c');
-        System.out.println();
+        System.out.println();*/
 
         // Add to back
-        System.out.println("Add to back");
+/*        System.out.println("Add to back");
         list.addToQBack('d');
         list.addToQBack('e');
         list.addToQBack('f');
@@ -97,7 +93,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
             iterator.next();
         } catch (NoSuchElementException ex) {
             System.out.println("Queue is empty - iterator throws NoSuchElementException");
-        }
+        }*/
 
 
     }
@@ -122,30 +118,46 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
         }
     }*/
 
-    private Node<Item> head; // --> first
-    private Node<Item> tail; // --> last
+    private OrderedQT6.Node head; // --> first
+    private OrderedQT6.Node tail; // --> last
     private int numberOfNodes;
 
     //Constructor for the list. Set initial number of nodes to 0
-    public IterableCLLT4() {
+    public OrderedQT6() {
         head = null;
         tail = null;
         numberOfNodes = 0;
     }
 
-    @Override
-    public Iterator<Item> iterator() {
-        return new CLLIterator(head);
-    }
 
     private boolean isEmpty() {
         return tail == null && head == null;
     }
 
+    public void addToQSorted(int item) {
+        if (isEmpty() || item <= head.item) {
+            addToQFront(item);
+        } else if (item >= tail.item) {
+            addToQBack(item);
+        } else {
+            Node sentinel = head;
+            while (item > sentinel.next.item) {
+                sentinel = sentinel.next;
+            }
+            Node addMe = new Node();
+            addMe.item = item;
+            addMe.next = sentinel.next;
+            sentinel.next = addMe;
+        }
+        numberOfNodes++;
+        System.out.println(displayBrackets());
+
+    }
+
     //Add element to the back of the Q
-    public void addToQBack(Item item) {
-        Node<Item> oldNode = tail;
-        tail = new Node<Item>();
+    public void addToQBack(int item) {
+        OrderedQT6.Node oldNode = tail;
+        tail = new OrderedQT6.Node();
         tail.item = item;
 
         if (isEmpty()) {
@@ -155,14 +167,14 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
             oldNode.next = tail;
         }
         tail.next = head;
-        numberOfNodes++;
-        System.out.println(displayBrackets());
+
+        //System.out.println(displayBrackets());
     }
 
     //Add elements to the front of the Q
-    public void addToQFront(Item item) {
-        Node<Item> oldNode = head;
-        head = new Node<Item>();
+    public void addToQFront(int item) {
+        OrderedQT6.Node oldNode = head;
+        head = new OrderedQT6.Node();
         head.next = oldNode;
         head.item = item;
 
@@ -172,8 +184,8 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
             tail.next = head;
         }
 
-        numberOfNodes++;
-        System.out.println(displayBrackets());
+
+        //System.out.println(displayBrackets());
     }
 
     //Remove elements from the front of the Q
@@ -213,7 +225,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
             return;
         }
 
-        Node nextToLast = head;
+        OrderedQT6.Node nextToLast = head;
         while (nextToLast.next != tail) {
             nextToLast = nextToLast.next;
         }
@@ -226,7 +238,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
 
     //Use a string builder because of the special output required from the lab task
     public String displayBrackets() {
-        IterableCLLT4.Node node = head;
+        OrderedQT6.Node node = head;
         int i = 0;
         if (isEmpty()) {
             return "[]";
@@ -235,7 +247,7 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
 
         while (i < numberOfNodes) {
             sb.append("[");
-            sb.append(node.item.toString());
+            sb.append(node.item);
             sb.append("],");
             node = node.next;
             i++;
@@ -246,52 +258,15 @@ public class IterableCLLT4<Item> implements Iterable<Item> {
     }
 
     /**
-     *
      * item -> Generic type - It can be Integer, Character ..
      * next -> Reference to the next node
-     *
      */
-    private static class Node<Item> {
+    private static class Node {
         // prev is not needed because the list is singly linked
-        Item item;
-        Node next;
+        int item;
+        OrderedQT6.Node next;
     }
 
-    private static class CLLIterator<Item> implements Iterator<Item> {
-        private Node<Item> head;
-        private Node<Item> current;
-        private boolean rootVisited = false;
 
-        public CLLIterator(final Node<Item> head) {
-            this.head = head;
-            this.current = head;
-        }
-
-        @Override
-        public boolean hasNext() {
-            if (current == null || rootVisited) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public Item next() {
-            if (current == null) {
-                throw new NoSuchElementException();
-            }
-            if (current == head && rootVisited) {
-                throw new NoSuchElementException();
-            }
-            if (current.next == head) {
-                rootVisited = true;
-            }
-            Item item = current.item;
-            current = current.next;
-            return item;
-        }
-    }
 }
-
-
 

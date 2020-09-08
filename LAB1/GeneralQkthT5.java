@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class GeneralQkthT5<Item> implements Iterable<Item> {
+
     private Item [] queue;
     private int qSize;
 
@@ -16,11 +17,13 @@ public class GeneralQkthT5<Item> implements Iterable<Item> {
         return qSize == 0;
     }
     public Item get(int position){
-
         return queue[position];
     }
 
     public String displayBrackets() {
+        if (isEmpty()) {
+            return "[]";
+        }
         StringBuilder sb = new StringBuilder();
 
         int i = 0;
@@ -31,8 +34,6 @@ public class GeneralQkthT5<Item> implements Iterable<Item> {
         return sb.toString();
     }
 
-
-
     public void addToQ(Item item){
         if (qSize == queue.length){
             extendArray();
@@ -40,50 +41,59 @@ public class GeneralQkthT5<Item> implements Iterable<Item> {
         queue[qSize] = item;
         //System.out.println(queue[qSize]);
         qSize++;
-
+        System.out.println(displayBrackets());
     }
 
     public Item removeFromQ(int k){
         if (isEmpty()){
-            System.out.println("Queue is empty");
+            System.out.println(displayBrackets());
+            return null;
         }
         if (k <= 0 || qSize < k){
             System.out.println("Invalid Index");
         }
-        Item item = queue[k-1];
-        reIndex(k);
+        int itemToRemoveIndex = qSize - k;
+        Item item = queue[itemToRemoveIndex];
+        reIndex(itemToRemoveIndex);
         qSize --;
-        if (qSize == queue.length /4){
+        if (qSize == queue.length / 4){
             shrinkArray();
         }
-        //System.out.println(item);
+        System.out.println(displayBrackets());
         return item;
     }
 
     private void reIndex(int primeIndex) {
-        for (int i = primeIndex; i < qSize; i++) {
-            queue[i-1] = queue[i];
+        for (int i = primeIndex; i < qSize - 1; i++) {
+            queue[i] = queue[i+1];
         }
-        queue[qSize -1] = null; // Clean up and avoid loitering
+        queue[qSize - 1] = null; // Clean up and avoid loitering
     }
 
     private void shrinkArray() {
-        int newShrinkedCapacuty = queue.length /2;
-        queue = Arrays.copyOf(queue,newShrinkedCapacuty);
+        int newShrinkedCapacuty = queue.length / 2;
+        queue = Arrays.copyOf(queue, newShrinkedCapacuty);
 
     }
 
     private void extendArray() {
-        int newExtendedCapacity = queue.length*2;
-        queue = Arrays.copyOf(queue,newExtendedCapacity);
+        int newExtendedCapacity = queue.length * 2;
+        queue = Arrays.copyOf(queue, newExtendedCapacity);
     }
 
     @Override
     public Iterator<Item> iterator() {
-        return new GeneralQkthIterato();
+        return new GeneralQkthIterator();
     }
 
-    private class GeneralQkthIterato implements Iterator<Item> {
+    public void printAll() {
+        for(Item i : queue) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+    }
+
+    private class GeneralQkthIterator implements Iterator<Item> {
         private int index = 0;
         @Override
         public boolean hasNext() {
@@ -96,21 +106,33 @@ public class GeneralQkthT5<Item> implements Iterable<Item> {
             index++;
             return item;
         }
-
     }
 
     public static void main(String[] args) {
+        System.out.println("Add elements");
         GeneralQkthT5<Integer> generalQkthT5 = new GeneralQkthT5<>();
         generalQkthT5.addToQ(0);
-        //System.out.println(generalQkthT5.displayBrackets());
         generalQkthT5.addToQ(2);
-        //System.out.println(generalQkthT5.displayBrackets());
         generalQkthT5.addToQ(4);
-        //System.out.println(generalQkthT5.displayBrackets());
-        System.out.println("Q after insertion");
-        System.out.println(generalQkthT5.displayBrackets());
-        //System.out.println("Q after removal of element on index 3 :");
-        //generalQkthT5.removeFromQ(3);
-        //System.out.println(generalQkthT5.displayBrackets());
+        generalQkthT5.addToQ(5);
+        generalQkthT5.addToQ(6);
+        generalQkthT5.addToQ(7);
+        generalQkthT5.addToQ(9);
+        generalQkthT5.addToQ(10);
+        System.out.println();
+
+        System.out.println("Remove elements");
+        generalQkthT5.removeFromQ(3);
+        generalQkthT5.removeFromQ(1);
+        generalQkthT5.removeFromQ(2);
+        generalQkthT5.removeFromQ(5);
+        generalQkthT5.removeFromQ(2);
+        generalQkthT5.removeFromQ(2);
+        generalQkthT5.removeFromQ(2);
+        generalQkthT5.removeFromQ(1);
+        System.out.println();
+
+        System.out.println("Test remove with no elements");
+        generalQkthT5.removeFromQ(1);
     }
 }
