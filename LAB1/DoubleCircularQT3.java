@@ -11,6 +11,7 @@ public class DoubleCircularQT3<Item> implements Iterable {
         list.addToQ('b');
         //list.removeFromFront();
         Iterator lala =  list.iterator();
+        System.out.println("Testing the iterator:");
         while (lala.hasNext()){
             System.out.print( "[" + lala.next() + "]");
         }
@@ -24,6 +25,7 @@ public class DoubleCircularQT3<Item> implements Iterable {
 
     public DoubleCircularQT3() {
         sentinel = new Node();
+
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
     }
@@ -62,8 +64,7 @@ public class DoubleCircularQT3<Item> implements Iterable {
 
     @Override
     public Iterator iterator() {
-
-        return new DCLLIterator(sentinel.next);
+        return new DCLLIterator(sentinel.prev);
 
 
     }
@@ -96,7 +97,7 @@ public class DoubleCircularQT3<Item> implements Iterable {
     }
 
     public void removeFromFront(){
-        if (numberOfNodes <= 0){
+        if (isEmpty()){
             System.out.println("The queue is empty!");
         } else {
             // Decrease the counter because a node will be removed
@@ -121,7 +122,7 @@ public class DoubleCircularQT3<Item> implements Iterable {
             sb.append("[");
             sb.append(node.item.toString());
             sb.append("],");
-            node = node.next;
+            node = node.prev;
             i++;
         }
         //Don't place ',' after the last element

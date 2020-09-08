@@ -14,7 +14,6 @@ public class ReversePrintRecursiveT2 {
         if (input != '\n') {
             recursiveFunction();
             StdOut.print("[" + input + "],");
-
         }
 
 
