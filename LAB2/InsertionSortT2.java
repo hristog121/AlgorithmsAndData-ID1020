@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class InsertionSortT2 {
 
     public static void main(String a[]) {
-        System.out.println("Maximum number of inputs: ");
+        System.out.println("What size array do you want to sort? ");
         Scanner sc = new Scanner(System.in);
 
         //Take the size of the array from user input - comes from the task
@@ -33,8 +33,9 @@ public class InsertionSortT2 {
     }
 
     /**
-     * Implementation of the insertion sort algorithm. The methods takes an array of integers and sorts them
-     * The integer with lowest value is on the lowest index
+     * Implementation of the insertion sort algorithm. The methods takes an array of integers and sorts them.
+     * The integer with lowest value is on the lowest index. This implementation counts the swaps made and give
+     * the total amount of swaps. The total amount of swaps are displayed to the user when the sorting is done.
      *
      * @param inputArray
      */
@@ -65,6 +66,7 @@ public class InsertionSortT2 {
             //Print the number of swaps made after eacg itteration
 
         }
+        //Print the total number of swaps that we get after the final sorting
         System.out.println("This is the swaps: " + swaps);
     }
 

@@ -1,3 +1,8 @@
+/**
+ * Augmented Insertion Sort so the array is sorted in descending order
+ * @author Hristo Georgiev - 1c3r00t
+ **/
+
 import java.util.Scanner;
 
 public class ExtraTask1 {
@@ -35,7 +40,7 @@ public class ExtraTask1 {
             temp = inputArray[i];
             //assign i-1 to j
             j = i - 1;
-            //A sign changes so the numbers are printed in reverse order
+            //A sign changes so the numbers are sorted in reverse order
             while ((j > -1) && (inputArray[j] < temp)) {
                 inputArray[j + 1] = inputArray[j];
 

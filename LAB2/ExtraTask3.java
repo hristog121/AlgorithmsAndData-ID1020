@@ -16,10 +16,10 @@ public class ExtraTask3 {
     public void quickSort3Way(int[] inputArray, int start, int end) {
         int partition = partition3WayArr(inputArray,start,end);
         if (partition - 1 > start) {
-            quickSort(inputArray, start,partition-1);
+            quickSort3Way(inputArray, start,partition-1);
         }
         if (partition +1 < end){
-            quickSort(inputArray, partition +1, end);
+            quickSort3Way(inputArray, partition +1, end);
         }
     }
     private int partitionArr(int[] inputArray, int lo, int hi) {

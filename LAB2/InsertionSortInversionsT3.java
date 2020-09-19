@@ -13,21 +13,22 @@ import java.util.Scanner;
 
 public class InsertionSortInversionsT3 {
     public static void main(String a[]) {
-        System.out.println("Maximum number of inputs: ");
+
+        System.out.println("What size array do you want to sort? ");
         Scanner sc = new Scanner(System.in);
 
-        //Take the size of the array from user input - comes from the task
+        //Takes user input for how big the array will be - per task requirements
         int inputArraySize = sc.nextInt();
         System.out.println("Write your integer and press ENTER: ");
         //init array to store the user input
         int inputArray[] = new int[inputArraySize];
 
-        //read user input < inputArraySize array inputArray
+        //read user input and feeds it into inputArray to be sorted later
         for (int i = 0; i < inputArraySize; i++) {
             inputArray[i] = sc.nextInt();
         }
 
-        //Print the number of inversions in the desired format
+        //Print the number of inversions in the desired format plus the total amount (as an integer)
         System.out.println(countInversions(inputArray));
         //call the insertion_sort function by passing the inputArray as parameter
         //The print is done inside of the implementation of the method bellow
@@ -64,9 +65,10 @@ public class InsertionSortInversionsT3 {
             displayOutput(inputArray);
             //So the iterations are printed on a new line
             System.out.println();
-            //Print the number of swaps made after eacg iteration
-            System.out.println("This is the swaps: " + swaps);
+
         }
+        //Print the number of swaps made after eacg iteration
+        System.out.println("This is the swaps: " + swaps);
     }
 
     /**
@@ -80,20 +82,32 @@ public class InsertionSortInversionsT3 {
         }
 
     }
+
+    /**
+     * Method to count and display the inversions in the array before it is sorted.
+     * The format of the display data is - [i,a[i]], [j, a[j]] where i and j are indices and a[i], a[j]
+     * are the values of the elements
+     * @param inputArray
+     * @return
+     */
     private static String countInversions(int[] inputArray) {
-        // use string builder for efficient string concatination
+        // Variable to count the inversions
         int numberOfInversions = 0;
+        //Use string builder to present the data as wanted by the task
+
         StringBuilder sb = new StringBuilder();
         //compare every element with the ones after it to see if they are inverted
         for (int i = 0; i < inputArray.length; i++) {
             for (int j = i + 1; j < inputArray.length; j++) {
-                if (inputArray[i] > inputArray[j])
+                if (inputArray[i] > inputArray[j]){
                     numberOfInversions ++;
-
                     sb.append(String.format("[%d,%d, %d,%d] ", i, inputArray[i], j, inputArray[j]));//record inversion
+                }
+
             }
         }
-        sb.append(String.format("Total count of inversions: %d", numberOfInversions));
+        // Display total amount of inversions
+        sb.append(String.format("Total amount of inversions: %d", numberOfInversions));
         return sb.toString(); //output final string
 
 

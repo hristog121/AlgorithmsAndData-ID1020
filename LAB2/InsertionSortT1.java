@@ -14,7 +14,8 @@ import java.util.Scanner;
 public class InsertionSortT1 {
 
     public static void main(String a[]) {
-        System.out.println("Maximum number of inputs: ");
+        System.out.println("What size array do you want to sort? ");
+
         Scanner sc = new Scanner(System.in);
 
         //Take the size of the array from user input - comes from the task
@@ -28,7 +29,7 @@ public class InsertionSortT1 {
             inputArray[i] = sc.nextInt();
         }
         //call the insertion_sort function by passing the inputArray as parameter
-        //The print is done inside of the implementation of the method bellow
+        //The print is done inside of the implementation of the method
         insertionSort(inputArray);
     }
 
@@ -40,20 +41,20 @@ public class InsertionSortT1 {
      */
     public static void insertionSort(int inputArray[]) {
         int j, temp;
-        //int swaps = 0;
+
         //start the for loop for iterating the array elements in the array
         for (int i = 1; i < inputArray.length; i++) {
             //stores the value at index at i int temp
             temp = inputArray[i];
             //assign i-1 to j
             j = i - 1;
-            //while loop iterates upto j>i-1 and inputArray[j]>temp are true
+            //while loop to make the swap when inputArray[j]>temp are true
             while ((j > -1) && (inputArray[j] > temp)) {
                 inputArray[j + 1] = inputArray[j];
 
                 j--;
             }
-            //store temp values into particular index j+1
+            //store temp values into  index j+1
             inputArray[j + 1] = temp;
             System.out.print("Iteration " + (i) + " : ");
             //display array values after each inner loop iteration - per lab task

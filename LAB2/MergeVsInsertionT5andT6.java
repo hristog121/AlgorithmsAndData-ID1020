@@ -2,18 +2,22 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * This is an implementation of Insertion Sort. The user inputs first the size of the array
- * and inputs ints one by one while pressing enter in between.
- * The implementation contains methods to:
- * insertionSort - sorts array on ints by using insertion sort.
- * displayOutput - Iterates through the inputArray and displays the values. This is combined with
- * a pront statement in the insertionSort method to get the desired output for the lab.
- *
+ * This class contains three different algorithms.
+ * Insertion Sort - modified to take lo and hi as arguments because it is used in the cutOFF version of MergeSort
+ * Merge Sort without CutOff
+ * Merge Sort with CutOff to Insertion Sort
+ * The goal is to showcase and compare the execution times between the three algorithms. The results are given in ms.
  * @author Hristo Georgiev - 1c3r00t
  **/
 
 public class MergeVsInsertionT5andT6 {
-
+    /**
+     * Main function for testing purposes. The output of the main function will cover all algorithms.
+     * The algorithms are tested on a randomly generated array with a chosen size.
+     * When the array is generated all the algorithms are tested on the same array so comparison can be made by graphing
+     * the results.
+     * @param a
+     */
     //Insertion sort section plus time test
     public static void main(String a[]) {
 
@@ -22,7 +26,7 @@ public class MergeVsInsertionT5andT6 {
 
         int minElements = 100;
         int maxElements = 1000000;
-
+        //Change this value - the amount of different arrays tested
         int countTestArrays = 10;
 
         int minMergeCutOff = 0;
@@ -118,7 +122,8 @@ public class MergeVsInsertionT5andT6 {
 
     /**
      * Implementation of the insertion sort algorithm. The methods takes an array of integers and sorts them
-     * The integer with lowest value is on the lowest index
+     * The integer with lowest value is on the lowest index. This is a modified version of Insertion Sort to take
+     * lo and hi as arguments. This is done because this algorithm is used in the CutOff version of Merge Sort
      *
      * @param inputArray
      */
@@ -143,13 +148,19 @@ public class MergeVsInsertionT5andT6 {
     }
 
     //topdown mergesord
+
+    /**
+     * Implementation of Merge Sort. This implementation contains both the "normal" version and the version with
+     * a CutOff to Insertion Sort
+     */
     public static class MergeSort {
+        //variable to control the size of the cut off
         private final int cutOff;
 
         public MergeSort(final int cutOff) {
             this.cutOff = cutOff;
         }
-
+        //Merging method
         void merge(int inputArray[], int lo, int mid, int hi) {
             // Creating temporary subarrays
             int leftArr[] = new int[mid - lo + 1];
@@ -161,13 +172,13 @@ public class MergeVsInsertionT5andT6 {
             for (int i = 0; i < rightArr.length; i++)
                 rightArr[i] = inputArray[mid + i + 1];
 
-            // Iterators containing current index of temp subarrays
+            // Containing current index of temp sub arrays
             int iLeft = 0;
             int iRight = 0;
 
             // Copying from leftArr and rightArr back into array
             for (int i = lo; i < hi + 1; i++) {
-                // If there are still uncopied elements in R and L, copy minimum of the two
+                // If there are still un copied elements in rightArr and leftArr, copy minimum of the two
                 if (iLeft < leftArr.length && iRight < rightArr.length) {
                     if (leftArr[iLeft] < rightArr[iRight]) {
                         inputArray[i] = leftArr[iLeft];
@@ -187,7 +198,7 @@ public class MergeVsInsertionT5andT6 {
                 }
             }
         }
-
+        // Sort with NO CutOff Merge Sort
         void sortNoCutOff(int inputArray[], int lo, int hi) {
             if (lo < hi) {
                 //Put the cut of here
@@ -197,10 +208,10 @@ public class MergeVsInsertionT5andT6 {
                 merge(inputArray, lo, mid, hi);
             }
         }
-
+        // Sort with with CutOff Merge Sort
         void sortCutOff(int inputArray[], int lo, int hi) {
             if ((hi - lo + 1) <= cutOff) {
-                //Put the cut of here
+                //use insertion sort
                 insertionSort(inputArray, lo, hi);
             } else if (lo < hi){
                 int mid = (hi + lo) / 2;
