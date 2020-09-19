@@ -63,8 +63,9 @@ public class InsertionSortT2 {
             //So the iterations are printed on a new line
             System.out.println();
             //Print the number of swaps made after eacg itteration
-            System.out.println("This is the swaps: " + swaps);
+
         }
+        System.out.println("This is the swaps: " + swaps);
     }
 
     /**

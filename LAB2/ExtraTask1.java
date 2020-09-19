@@ -1,17 +1,6 @@
-/**
- * This is an implementation of Insertion Sort. The user inputs first the size of the array
- * and inputs ints one by one while pressing enter in between.
- * The implementation contains methods to:
- * insertionSort - sorts array on ints by using insertion sort.
- * displayOutput - Iterates through the inputArray and displays the values. This is combined with
- * a pront statement in the insertionSort method to get the desired output for the lab.
- *
- * @author Hristo Georgiev - 1c3r00t
- **/
-
 import java.util.Scanner;
 
-public class InsertionSortInversionsT3 {
+public class ExtraTask1 {
     public static void main(String a[]) {
         System.out.println("Maximum number of inputs: ");
         Scanner sc = new Scanner(System.in);
@@ -26,9 +15,6 @@ public class InsertionSortInversionsT3 {
         for (int i = 0; i < inputArraySize; i++) {
             inputArray[i] = sc.nextInt();
         }
-
-        //Print the number of inversions in the desired format
-        System.out.println(countInversions(inputArray));
         //call the insertion_sort function by passing the inputArray as parameter
         //The print is done inside of the implementation of the method bellow
         insertionSort(inputArray);
@@ -42,19 +28,17 @@ public class InsertionSortInversionsT3 {
      */
     public static void insertionSort(int inputArray[]) {
         int j, temp;
-        //initializing swaps counter and setting it to 0
-        int swaps = 0;
+        //int swaps = 0;
         //start the for loop for iterating the array elements in the array
         for (int i = 1; i < inputArray.length; i++) {
             //stores the value at index at i int temp
             temp = inputArray[i];
             //assign i-1 to j
             j = i - 1;
-            //while loop iterates upto j>i-1 and inputArray[j]>temp are true
-            while ((j > -1) && (inputArray[j] > temp)) {
+            //A sign changes so the numbers are printed in reverse order
+            while ((j > -1) && (inputArray[j] < temp)) {
                 inputArray[j + 1] = inputArray[j];
-                //A swap is made
-                ++swaps;
+
                 j--;
             }
             //store temp values into particular index j+1
@@ -64,8 +48,7 @@ public class InsertionSortInversionsT3 {
             displayOutput(inputArray);
             //So the iterations are printed on a new line
             System.out.println();
-            //Print the number of swaps made after eacg iteration
-            System.out.println("This is the swaps: " + swaps);
+
         }
     }
 
@@ -78,24 +61,6 @@ public class InsertionSortInversionsT3 {
         for (int i = 0; i < inputArray.length; i++) {
             System.out.print(inputArray[i] + " ");
         }
-
-    }
-    private static String countInversions(int[] inputArray) {
-        // use string builder for efficient string concatination
-        int numberOfInversions = 0;
-        StringBuilder sb = new StringBuilder();
-        //compare every element with the ones after it to see if they are inverted
-        for (int i = 0; i < inputArray.length; i++) {
-            for (int j = i + 1; j < inputArray.length; j++) {
-                if (inputArray[i] > inputArray[j])
-                    numberOfInversions ++;
-                    //System.out.println("This is the number if inversions" + numberOfInversions);
-                    sb.append(String.format("[%d,%d, %d,%d] ", i, inputArray[i], j, inputArray[j]));//record inversion
-            }
-        }
-        sb.append(String.format("Total count of inversions: %d", numberOfInversions));
-        return sb.toString(); //output final string
-
 
     }
 }
