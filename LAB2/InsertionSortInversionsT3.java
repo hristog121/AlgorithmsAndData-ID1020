@@ -89,7 +89,7 @@ public class InsertionSortInversionsT3 {
             for (int j = i + 1; j < inputArray.length; j++) {
                 if (inputArray[i] > inputArray[j])
                     numberOfInversions ++;
-                    //System.out.println("This is the number if inversions" + numberOfInversions);
+
                     sb.append(String.format("[%d,%d, %d,%d] ", i, inputArray[i], j, inputArray[j]));//record inversion
             }
         }
