@@ -9,6 +9,7 @@
  *
  * @author Hristo Georgiev - 1c3r00t
  **/
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class InsertionSortT2 {
@@ -30,6 +31,8 @@ public class InsertionSortT2 {
         //call the insertion_sort function by passing the inputArray as parameter
         //The print is done inside of the implementation of the method bellow
         insertionSort(inputArray);
+        System.out.println("This is the array after sorting: " + Arrays.toString(inputArray));
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [0, 1, 2, 3, 4, 5]. Number of swaps: 6" );
     }
 
     /**
@@ -67,7 +70,8 @@ public class InsertionSortT2 {
 
         }
         //Print the total number of swaps that we get after the final sorting
-        System.out.println("This is the swaps: " + swaps);
+        System.out.println("Total amount of swaps " + swaps);
+
     }
 
     /**

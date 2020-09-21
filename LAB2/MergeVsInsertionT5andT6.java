@@ -7,6 +7,7 @@ import java.util.Random;
  * Merge Sort without CutOff
  * Merge Sort with CutOff to Insertion Sort
  * The goal is to showcase and compare the execution times between the three algorithms. The results are given in ms.
+ *
  * @author Hristo Georgiev - 1c3r00t
  **/
 
@@ -16,18 +17,36 @@ public class MergeVsInsertionT5andT6 {
      * The algorithms are tested on a randomly generated array with a chosen size.
      * When the array is generated all the algorithms are tested on the same array so comparison can be made by graphing
      * the results.
+     *
      * @param a
      */
     //Insertion sort section plus time test
     public static void main(String a[]) {
 
+        // TEST OF THE SORTING WORKS - START
+        int[] testArra1 = {1, 2, 4, 3, 5, 0};
+        int[] testArra2 = {1, 2, 4, 3, 5, 0};
+        MergeSort testMerge = new MergeSort(0);
+        testMerge.sortNoCutOff(testArra1, 0, testArra1.length - 1);
+        testMerge.sortCutOff(testArra2, 0, testArra2.length - 1);
+        System.out.println();
+        System.out.println("MergeSort no CutOFF");
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [0, 1, 2, 3, 4, 5].");
+        System.out.println();
+        System.out.println("This is the array after sorting: " + Arrays.toString(testArra1));
+        System.out.println();
+        System.out.println("MergeSort With CutOFF");
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [0, 1, 2, 3, 4, 5].");
+        System.out.println();
+        System.out.println("This is the array after sorting: " + Arrays.toString(testArra2));
+        // TEST OF THE SORTING WORKS - START
         Random random = new Random();
-        StringBuilder sb = new StringBuilder();
+        //StringBuilder sb = new StringBuilder();
 
         int minElements = 100;
         int maxElements = 1000000;
         //Change this value - the amount of different arrays tested
-        int countTestArrays = 10;
+        int countTestArrays = 1;
 
         int minMergeCutOff = 0;
         int maxMergeCutOff = 30;
@@ -35,16 +54,16 @@ public class MergeVsInsertionT5andT6 {
 
         // Display header
         System.out.printf("countElements,insertionMid,mergeNoCutMid");
-        for (int i = minMergeCutOff; i <= maxMergeCutOff; i+= mergeCutOffIncrement) {
+        for (int i = minMergeCutOff; i <= maxMergeCutOff; i += mergeCutOffIncrement) {
             System.out.printf(",mergeCut%dMid", i);
         }
         System.out.printf("\n");
-        for (int countElements = minElements; countElements <= maxElements;) {
+        for (int countElements = minElements; countElements <= maxElements; ) {
 
             // Control variants of arrays
             double[] resultsInsertion = new double[countTestArrays];
             double[] resultsMerge = new double[countTestArrays];
-            double[][] resultsMergeWithCut = new double[maxMergeCutOff+1][countTestArrays];
+            double[][] resultsMergeWithCut = new double[maxMergeCutOff + 1][countTestArrays];
             for (int j = 0; j < countTestArrays; j++) {
                 int[] inputArray = random.ints(countElements, 1, countElements + 1).toArray();
                 resultsInsertion[j] = timeInsertion(inputArray);
@@ -55,34 +74,35 @@ public class MergeVsInsertionT5andT6 {
                 }
             }
             System.out.printf("%d,%.5f,%.5f", countElements, calculateMid(resultsInsertion), calculateMid(resultsMerge));
-            for (int i = minMergeCutOff; i <= maxMergeCutOff; i+= mergeCutOffIncrement) {
+            for (int i = minMergeCutOff; i <= maxMergeCutOff; i += mergeCutOffIncrement) {
                 System.out.printf(",%.5f", calculateMid(resultsMergeWithCut[i]));
             }
             System.out.printf("\n");
 
             countElements += getIncrement(countElements);
         }
+
     }
 
     /**
-     *
      * @return [100-1000] -> 100;
-     *         [1000 - 10000] -> 1000;
-     *         [10000 - 100000] -> 10000;
-     *         [100000 - 1000000] -> 100000;
+     * [1000 - 10000] -> 1000;
+     * [10000 - 100000] -> 10000;
+     * [100000 - 1000000] -> 100000;
      */
     private static int getIncrement(int countElements) {
-        if(countElements < 1000)
+        if (countElements < 1000)
             return 100;
-        if(countElements < 10000)
+        if (countElements < 10000)
             return 1000;
-        if(countElements < 100000)
+        if (countElements < 100000)
             return 10000;
-        if(countElements < 1000000)
+        if (countElements < 1000000)
             return 100000;
         throw new UnsupportedOperationException("Please enter a number between 100 and 1000000");
     }
 
+    //Calculate The middle value
     private static double calculateMid(double[] results) {
         double mid = 0;
         for (int j = 0; j < results.length; j++) {
@@ -92,14 +112,16 @@ public class MergeVsInsertionT5andT6 {
         return mid;
     }
 
+    //Function to time Insertion Sort
     public static double timeInsertion(int inputArray[]) {
         int[] arr1 = Arrays.copyOf(inputArray, inputArray.length);
         long start = System.nanoTime();
         insertionSort(arr1, 0, inputArray.length);
         long end = System.nanoTime();
-        return  (end - start)/1000000.0;
+        return (end - start) / 1000000.0;
     }
 
+    //Function to time merge sort with NO cut off.
     public static double timeMerge(int inputArray[]) {
         int[] arr2 = Arrays.copyOf(inputArray, inputArray.length);
         MergeSort m = new MergeSort(0);
@@ -107,16 +129,17 @@ public class MergeVsInsertionT5andT6 {
         long start2 = System.nanoTime();
         m.sortNoCutOff(arr2, 0, arr2.length - 1);
         long end2 = System.nanoTime();
-        return (end2 - start2)/1000000.0;
+        return (end2 - start2) / 1000000.0;
     }
 
+    //Function to time merge sort with cut off. The cutoff is given as parameter to the func
     private static double timeMerge(int inputArray[], int cutOff) {
         int[] arr3 = Arrays.copyOf(inputArray, inputArray.length);
         MergeSort m = new MergeSort(cutOff);
         long start3 = System.nanoTime();
         m.sortCutOff(arr3, 0, arr3.length - 1);
         long end3 = System.nanoTime();
-        return (end3 - start3)/1000000.0;
+        return (end3 - start3) / 1000000.0;
     }
 
 
@@ -141,13 +164,12 @@ public class MergeVsInsertionT5andT6 {
                 inputArray[j + 1] = inputArray[j];
                 j--;
             }
-
+            //store temp values into particular index j+1
             inputArray[j + 1] = temp;
 
         }
     }
 
-    //topdown mergesord
 
     /**
      * Implementation of Merge Sort. This implementation contains both the "normal" version and the version with
@@ -160,6 +182,7 @@ public class MergeVsInsertionT5andT6 {
         public MergeSort(final int cutOff) {
             this.cutOff = cutOff;
         }
+
         //Merging method
         void merge(int inputArray[], int lo, int mid, int hi) {
             // Creating temporary subarrays
@@ -198,6 +221,7 @@ public class MergeVsInsertionT5andT6 {
                 }
             }
         }
+
         // Sort with NO CutOff Merge Sort
         void sortNoCutOff(int inputArray[], int lo, int hi) {
             if (lo < hi) {
@@ -208,12 +232,13 @@ public class MergeVsInsertionT5andT6 {
                 merge(inputArray, lo, mid, hi);
             }
         }
+
         // Sort with with CutOff Merge Sort
         void sortCutOff(int inputArray[], int lo, int hi) {
             if ((hi - lo + 1) <= cutOff) {
                 //use insertion sort
                 insertionSort(inputArray, lo, hi);
-            } else if (lo < hi){
+            } else if (lo < hi) {
                 int mid = (hi + lo) / 2;
                 sortCutOff(inputArray, lo, mid);
                 sortCutOff(inputArray, mid + 1, hi);

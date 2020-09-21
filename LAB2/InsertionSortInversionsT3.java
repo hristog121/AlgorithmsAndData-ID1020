@@ -9,6 +9,7 @@
  * @author Hristo Georgiev - 1c3r00t
  **/
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class InsertionSortInversionsT3 {
@@ -33,6 +34,11 @@ public class InsertionSortInversionsT3 {
         //call the insertion_sort function by passing the inputArray as parameter
         //The print is done inside of the implementation of the method bellow
         insertionSort(inputArray);
+        System.out.println();
+        System.out.println("This is the array after sorting: " + Arrays.toString(inputArray));
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [0, 1, 2, 3, 4, 5]. Number of swaps: 6" );
+        System.out.println();
+        System.out.println("The expected inversions: [0,1, 5,0] [1,2, 5,0] [2,4, 3,3] [2,4, 5,0] [3,3, 5,0] [4,5, 5,0]");
     }
 
     /**
@@ -68,7 +74,7 @@ public class InsertionSortInversionsT3 {
 
         }
         //Print the number of swaps made after eacg iteration
-        System.out.println("This is the swaps: " + swaps);
+        System.out.println("Total amount of swaps " + swaps);
     }
 
     /**
@@ -94,7 +100,7 @@ public class InsertionSortInversionsT3 {
         // Variable to count the inversions
         int numberOfInversions = 0;
         //Use string builder to present the data as wanted by the task
-
+        System.out.println("Inversions in format: [i,a[i]], [j, a[j]]");
         StringBuilder sb = new StringBuilder();
         //compare every element with the ones after it to see if they are inverted
         for (int i = 0; i < inputArray.length; i++) {

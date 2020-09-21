@@ -13,35 +13,117 @@ import java.util.Random;
 
 public class ExtraTask2 {
 
-    public static void main(String[] args) {
+    //Insertion sort section plus time test
+    public static void main(String a[]) {
 
+        // TEST OF THE SORTING WORKS - START
+        int[] testArra1 = {1, 2, 4, 3, 5, 0};
+        int[] testArra2 = {1, 2, 4, 3, 5, 0};
+        Merge mergeSort = new Merge();
+        mergeSort.sortMerge(testArra1, 0, testArra1.length - 1);
+        quickSort(testArra2, 0, testArra2.length - 1);
+        System.out.println();
+        System.out.println("MergeSort no CutOFF");
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [0, 1, 2, 3, 4, 5].");
+        System.out.println();
+        System.out.println("This is the array after sorting: " + Arrays.toString(testArra1));
+        System.out.println();
+        System.out.println("Quick Sort");
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [0, 1, 2, 3, 4, 5].");
+        System.out.println();
+        System.out.println("This is the array after sorting: " + Arrays.toString(testArra2));
+        // TEST OF THE SORTING WORKS - START
 
         Random random = new Random();
+        //StringBuilder sb = new StringBuilder();
 
-        int[] inputArray = random.ints(100000, 10, 100001).toArray();
-        int[] arr1 = Arrays.copyOf(inputArray, inputArray.length);
-        int[] arr2 = Arrays.copyOf(inputArray, inputArray.length);
-        Merge m = new Merge();
-        long start2 = System.currentTimeMillis();
-        m.sortMerge(arr2, 0, arr2.length - 1);
-        long end2 = System.currentTimeMillis();
-        long res2 = (end2 - start2);
-        System.out.println("Time for MergeSort: " + res2 + " ms");
-        System.out.println();
+        int minElements = 100;
+        int maxElements = 1000000;
+        //Change this value - the amount of different arrays tested
+        int countTestArrays = 1;
 
-        ExtraTask2 q = new ExtraTask2();
-        long start1 = System.currentTimeMillis();
-        q.quickSort(arr1, 0, arr1.length - 1);
-        long end1 = System.currentTimeMillis();
-        long res1 = (end1 - start1);
-        System.out.println("Time for Qicksort: " + res1 + " ms");
+        // Display header
+        System.out.printf("countElements,quickSort,mergeNoCutMid");
 
-        System.out.println();
+        System.out.printf("\n");
+        for (int countElements = minElements; countElements <= maxElements; ) {
 
+            // Control variants of arrays
+            double[] resultsQuickSort = new double[countTestArrays];
+            double[] resultsMerge = new double[countTestArrays];
 
+            for (int j = 0; j < countTestArrays; j++) {
+                int[] inputArray = random.ints(countElements, 1, countElements + 1).toArray();
+                resultsQuickSort[j] = timeQuickSort(inputArray);
+                resultsMerge[j] = timeMerge(inputArray);
+
+            }
+            System.out.printf("%d,%.5f,%.5f", countElements, calculateMid(resultsQuickSort), calculateMid(resultsMerge));
+
+            System.out.printf("\n");
+
+            countElements += getIncrement(countElements);
+        }
     }
 
-    public void quickSort(int[] inputArray, int start, int end) {
+    /**
+     * HELPER FUNCTIONS START
+     */
+
+    /**
+     * @return [100-1000] -> 100;
+     * [1000 - 10000] -> 1000;
+     * [10000 - 100000] -> 10000;
+     * [100000 - 1000000] -> 100000;
+     */
+    private static int getIncrement(int countElements) {
+        if (countElements < 1000)
+            return 100;
+        if (countElements < 10000)
+            return 1000;
+        if (countElements < 100000)
+            return 10000;
+        if (countElements < 1000000)
+            return 100000;
+        throw new UnsupportedOperationException("Please enter a number between 100 and 1000000");
+    }
+
+    //Calculate The middle value
+    private static double calculateMid(double[] results) {
+        double mid = 0;
+        for (int j = 0; j < results.length; j++) {
+            mid = mid + results[j];
+        }
+        mid = mid / results.length;
+        return mid;
+    }
+
+    //Function to time Insertion Sort
+    public static double timeQuickSort(int inputArray[]) {
+        int[] arr1 = Arrays.copyOf(inputArray, inputArray.length);
+        long start = System.nanoTime();
+        quickSort(arr1, 0, inputArray.length - 1);
+        long end = System.nanoTime();
+        return (end - start) / 1000000.0;
+    }
+
+    //Function to time merge sort with NO cut off.
+    public static double timeMerge(int inputArray[]) {
+        int[] arr2 = Arrays.copyOf(inputArray, inputArray.length);
+        Merge m = new Merge();
+
+        long start2 = System.nanoTime();
+        m.sortMerge(arr2, 0, arr2.length - 1);
+        long end2 = System.nanoTime();
+        return (end2 - start2) / 1000000.0;
+    }
+
+    /**
+     * HELPER FUNCTIONS END
+     */
+
+    //QUICK SORT
+    public static void quickSort(int[] inputArray, int start, int end) {
         if (start < end) {
             int pi = partitionArr(inputArray, start, end);
             quickSort(inputArray, start, pi - 1);
@@ -50,7 +132,7 @@ public class ExtraTask2 {
     }
 
     //Partitioning of the array and picking pivot element
-    private int partitionArr(int[] inputArray, int lo, int hi) {
+    private static int partitionArr(int[] inputArray, int lo, int hi) {
         int pivot = inputArray[hi];
         int i = (lo - 1); // index of smaller element
         for (int j = lo; j <= hi - 1; j++) {
@@ -76,7 +158,6 @@ public class ExtraTask2 {
 
     /**
      * Implementation of Merge Sort without CutOff.
-     *
      */
 
     public static class Merge {
@@ -130,5 +211,6 @@ public class ExtraTask2 {
             }
         }
     }
+
 }
 

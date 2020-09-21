@@ -3,6 +3,7 @@
  * @author Hristo Georgiev - 1c3r00t
  **/
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ExtraTask1 {
@@ -23,11 +24,13 @@ public class ExtraTask1 {
         //call the insertion_sort function by passing the inputArray as parameter
         //The print is done inside of the implementation of the method bellow
         insertionSort(inputArray);
+        System.out.println("This is the array after sorting: " + Arrays.toString(inputArray));
+        System.out.println("On input [1, 2, 4, 3, 5, 0] expected result is: [5, 4, 3, 2, 1, 0]");
     }
 
     /**
-     * Implementation of the insertion sort algorithm. The methods takes an array of integers and sorts them
-     * The integer with lowest value is on the lowest index
+     * Implementation of the insertion sort algorithm. The methods takes an array of integers and sorts them.
+     * The implementation is augmented so that the array is sorted in decending order
      *
      * @param inputArray
      */
@@ -40,7 +43,7 @@ public class ExtraTask1 {
             temp = inputArray[i];
             //assign i-1 to j
             j = i - 1;
-            //A sign changes so the numbers are sorted in reverse order
+            //A sign changes so the numbers are sorted in reverse order - this comes from the task
             while ((j > -1) && (inputArray[j] < temp)) {
                 inputArray[j + 1] = inputArray[j];
 
