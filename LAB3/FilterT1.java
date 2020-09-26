@@ -10,7 +10,7 @@ public class FilterT1 {
         System.out.println("String length after filtering: " + result.length());*/
 
         try {
-            FileReader reader = new FileReader("src/TestInput.txt");
+            FileReader reader = new FileReader("src/testText.txt");
             FileWriter writer = new FileWriter("src/output.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);
 
