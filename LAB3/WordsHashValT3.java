@@ -1,30 +1,41 @@
 public class WordsHashValT3 {
-    public static void main(String[] args) {
-
-        //Parse the text up to N words. N should be given as an argument.
-        int words = Integer.parseInt(args[0]);
-
-        // iterates through the file until it's over or we've read the given amount of words
-        for(int i = 0; i < words; i++) {
-            if(StdIn.isEmpty()) break;
-            String word = StdIn.readString().toLowerCase();
-            WordsHashVal(word);
-        };
-
+    public static int getHashValue(String s, int hashSize) {
+        //combine the hashCode with mod -> producing integers between 0 and m-1 - page 461
+        return (s.hashCode() & 0x7fffffff) % hashSize;
     }
-    //function to display hashcode of each word found in the text.
-    public static void WordsHashVal(String str) {
 
-        //spilt the string with the spaces , so that we found the words in the text. It this is not
-        //present we will take the hash values only on characters
-        for (String val : str.split(" "))
-        {
-            //calculate hashcode from in-built function hashCode() for strings and store that value in variable wordHashVal.
-            int wordHashVal = val.hashCode();
-
-            //print the hashcode "wordHashVal" of each word found in the text.
-            System.out.println(val +", "+ wordHashVal);
+    // main
+    public static void main(String[] args) {
+        // takes first input as hash size
+        int hashSize = Integer.parseInt(args[0]);
+        // array to count how many words go where
+        int[] wordsIn = new int[hashSize];
+        for(int i = 0; i < hashSize; i++)
+            wordsIn[i] = 0;
+        // takes in all words
+        while(!StdIn.isEmpty()) {
+            String word = StdIn.readString().toLowerCase();
+            int hashVal = getHashValue(word, hashSize);
+            // adds one where the word would go
+            wordsIn[hashVal]++;
         }
+
+        int total = 0, min = wordsIn[0], max = wordsIn[0];
+        // goes through all parts of the hash table
+        for(int i = 0; i < hashSize; i++) {
+            System.out.println(i + 1 + "  " + wordsIn[i]);
+            System.out.println();
+            // keeps track of min, max and total values
+            total += wordsIn[i];
+            if(min > wordsIn[i]) min = wordsIn[i];
+            if(max < wordsIn[i]) max = wordsIn[i];
+        }
+        System.out.println();
+        //Prints the value of the min max and avg hash values
+        System.out.println("Min, Max and Avg hashValues:");
+        System.out.println("Min: " + min);
+        System.out.println("Avg: " + total / hashSize);
+        System.out.println("Max: " + max);              // prints min, avg and max values
 
     }
 }
