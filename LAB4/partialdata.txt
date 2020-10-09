@@ -1,0 +1,8 @@
+7
+6
+A C
+A D
+C G
+D G
+D M
+J T
